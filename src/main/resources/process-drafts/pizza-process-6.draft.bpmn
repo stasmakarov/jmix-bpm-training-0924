@@ -44,7 +44,7 @@
       <outgoing>Flow_1408fr0</outgoing>
     </userTask>
     <sequenceFlow id="Flow_1408fr0" sourceRef="Activity_0hy324h" targetRef="Gateway_10qcz07" />
-    <userTask id="Activity_08xw3gj" name="Approve order" flowable:assignee="${jbt_RandomRobinUserProvider.getUser()}" jmix:assigneeSource="userProvider" jmix:assigneeValue="jbt_RandomRobinUserProvider">
+    <userTask id="Activity_08xw3gj" name="Approve order" flowable:assignee="${jbt_RandomRobinUserProvider.getUser()}" flowable:dueDate="PT3M" jmix:assigneeSource="userProvider" jmix:assigneeValue="jbt_RandomRobinUserProvider">
       <extensionElements>
         <jmix:conditionDetails conditionSource="userTaskOutcome" />
         <jmix:formData type="input-dialog" openMode="DIALOG">
