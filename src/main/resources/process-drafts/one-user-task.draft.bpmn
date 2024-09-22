@@ -13,7 +13,10 @@
         <jmix:conditionDetails conditionSource="userTaskOutcome" />
       </extensionElements>
     </sequenceFlow>
-    <userTask id="Activity_19lc4w6" name="User task" flowable:assignee="admin" jmix:assigneeSource="expression" jmix:assigneeValue="admin">
+    <userTask id="Activity_19lc4w6" name="User task" flowable:assignee="${jbt_RandomRobinUserProvider.getUser()}" jmix:assigneeSource="userProvider" jmix:assigneeValue="jbt_RandomRobinUserProvider">
+      <extensionElements>
+        <jmix:springBean beanName="jbt_RandomRobinUserProvider" methodName="getUser" />
+      </extensionElements>
       <incoming>Flow_1bm01i2</incoming>
       <outgoing>Flow_19pgglp</outgoing>
     </userTask>
