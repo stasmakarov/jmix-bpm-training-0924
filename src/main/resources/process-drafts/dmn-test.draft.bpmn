@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:jmix="http://jmix.io/schema/bpm/bpmn" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.flowable.org/processdef" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd">
+  <process id="dmn-test" name="Dmn test" isExecutable="true">
+    <startEvent id="startEvent1">
+      <extensionElements>
+        <jmix:formData type="input-dialog" openMode="DIALOG">
+          <jmix:formFields>
+            <jmix:formField id="amount" caption="Amount" type="double" editable="true" required="false" />
+            <jmix:formField id="status" caption="Status" type="string" editable="true" required="false" />
+          </jmix:formFields>
+        </jmix:formData>
+      </extensionElements>
+      <outgoing>Flow_0cdwkg5</outgoing>
+    </startEvent>
+    <sequenceFlow id="Flow_0cdwkg5" sourceRef="startEvent1" targetRef="Activity_1fn6pua" />
+    <serviceTask id="Activity_1fn6pua" name="Duscount table" flowable:type="dmn">
+      <extensionElements>
+        <flowable:field name="decisionTableReferenceKey">
+          <flowable:string>discount-decision-table</flowable:string>
+        </flowable:field>
+      </extensionElements>
+      <incoming>Flow_0cdwkg5</incoming>
+      <outgoing>Flow_0nchdry</outgoing>
+    </serviceTask>
+    <sequenceFlow id="Flow_0nchdry" sourceRef="Activity_1fn6pua" targetRef="Activity_11wr6ac" />
+    <scriptTask id="Activity_11wr6ac" name="Print" scriptFormat="groovy">
+      <incoming>Flow_0nchdry</incoming>
+      <outgoing>Flow_0he3a9c</outgoing>
+      <script>println "Discount $discount"</script>
+    </scriptTask>
+    <endEvent id="Event_0bi6mj7">
+      <incoming>Flow_0he3a9c</incoming>
+    </endEvent>
+    <sequenceFlow id="Flow_0he3a9c" sourceRef="Activity_11wr6ac" targetRef="Event_0bi6mj7" />
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_process">
+    <bpmndi:BPMNPlane id="BPMNPlane_process" bpmnElement="dmn-test">
+      <bpmndi:BPMNShape id="BPMNShape_startEvent1" bpmnElement="startEvent1">
+        <omgdc:Bounds x="150" y="150" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1jxflvf_di" bpmnElement="Activity_1fn6pua">
+        <omgdc:Bounds x="240" y="128" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_11r99tk_di" bpmnElement="Activity_11wr6ac">
+        <omgdc:Bounds x="400" y="128" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0bi6mj7_di" bpmnElement="Event_0bi6mj7">
+        <omgdc:Bounds x="562" y="150" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0cdwkg5_di" bpmnElement="Flow_0cdwkg5">
+        <omgdi:waypoint x="186" y="168" />
+        <omgdi:waypoint x="240" y="168" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0nchdry_di" bpmnElement="Flow_0nchdry">
+        <omgdi:waypoint x="340" y="168" />
+        <omgdi:waypoint x="400" y="168" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0he3a9c_di" bpmnElement="Flow_0he3a9c">
+        <omgdi:waypoint x="500" y="168" />
+        <omgdi:waypoint x="562" y="168" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
