@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright (c) Haulmont 2023. All Rights Reserved.
+  ~ Use is subject to license terms.
+  -->
+<view xmlns="http://jmix.io/schema/flowui/view"
+      xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
+      title="msg://io.jmix.notificationsflowui.view.inappnotification/inAppNotificationListView.title"
+      focusComponent="inAppNotificationsDataGrid">
+    <data readOnly="true">
+        <collection id="inAppNotificationsDc"
+                    class="io.jmix.notifications.entity.InAppNotification">
+            <fetchPlan extends="_base"/>
+            <loader id="inAppNotificationsDl">
+                <query>
+                    <![CDATA[select e from ntf_InAppNotification e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <genericFilter component="genericFilter"/>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+    </facets>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+    <layout>
+        <genericFilter id="genericFilter"
+                       dataLoader="inAppNotificationsDl">
+            <properties include=".*"/>
+        </genericFilter>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <button id="createBtn" action="inAppNotificationsDataGrid.create"/>
+            <button id="editBtn" action="inAppNotificationsDataGrid.edit"/>
+            <button id="removeBtn" action="inAppNotificationsDataGrid.remove"/>
+            <simplePagination id="pagination" dataLoader="inAppNotificationsDl"/>
+        </hbox>
+        <dataGrid id="inAppNotificationsDataGrid" selectionMode="MULTI"
+                  width="100%"
+                  minHeight="20em"
+                  columnReorderingAllowed="true"
+                  dataContainer="inAppNotificationsDc">
+            <actions>
+                <action id="create" type="ntf_createNotification" actionVariant="PRIMARY"/>
+                <action id="edit" type="list_edit">
+                    <properties>
+                        <property name="openMode" value="DIALOG"/>
+                    </properties>
+                </action>
+                <action id="remove" type="list_remove"/>
+            </actions>
+            <columns resizable="true">
+                <column property="type"/>
+                <column property="subject"/>
+                <column property="recipient"/>
+                <column property="readStatus"/>
+            </columns>
+        </dataGrid>
+        <hbox id="lookupActions" visible="false">
+            <button id="selectBtn" action="selectAction"/>
+            <button id="discardBtn" action="discardAction"/>
+        </hbox>
+    </layout>
+</view>
