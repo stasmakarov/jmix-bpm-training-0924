@@ -9,6 +9,7 @@
               title="msg://com.company.jmixbpmtraining.view.pizzaorder/pizzaOrderListView.title"/>
         <item view="jbt_OrderLine.list"
               title="msg://com.company.jmixbpmtraining.view.orderline/orderLineListView.title"/>
+        <item view="jbt_Account.list" title="msg://com.company.jmixbpmtraining.view.account/accountListView.title"/>
     </menu>
 
 </menu-config>

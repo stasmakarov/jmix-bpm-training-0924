@@ -1,4 +1,4 @@
-package com.company.jmixbpmtraining.app;
+package com.company.jmixbpmtraining.service;
 
 import com.company.jmixbpmtraining.entity.OrderLine;
 import com.company.jmixbpmtraining.entity.PizzaOrder;
