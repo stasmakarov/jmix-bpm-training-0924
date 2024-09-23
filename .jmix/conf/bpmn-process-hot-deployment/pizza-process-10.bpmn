@@ -1,22 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:jmix="http://jmix.io/schema/bpm/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:flowable="http://flowable.org/bpmn" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.flowable.org/processdef" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd">
-  <process id="pizza-process" name="Pizza process (9)" isExecutable="true" flowable:candidateStarterUsers="peter" jmix:candidateStarterUsersValue="peter">
+  <process id="pizza-process" name="Pizza process (10)" isExecutable="true" flowable:candidateStarterUsers="peter" jmix:candidateStarterUsersValue="peter">
     <extensionElements>
       <jmix:conditionDetails conditionSource="userTaskOutcome" />
     </extensionElements>
     <startEvent id="Event_0yqhrkq" name="Feed developer">
       <extensionElements>
-        <jmix:formData type="input-dialog" openMode="DIALOG">
-          <jmix:formFields>
-            <jmix:formField id="message" caption="Message" type="string" editable="true" required="false" />
-            <jmix:formField id="pizzaEater" caption="Pizza eater" type="entity" editable="true" required="true">
-              <jmix:formFieldProperty name="entityName" value="jbt_User" />
-              <jmix:formFieldProperty name="uiComponent" value="comboBox" />
-              <jmix:formFieldProperty name="lookupScreen" value="jbt_User.list" />
-              <jmix:formFieldProperty name="query" value="SELECT u FROM jbt_User u WHERE u.position = &#39;developer&#39;" />
-            </jmix:formField>
-          </jmix:formFields>
-        </jmix:formData>
+        <jmix:formData type="jmix-screen" openMode="DIALOG" screenId="jbt_StartPizzaProcessForm" />
       </extensionElements>
       <outgoing>Flow_1wakb5e</outgoing>
     </startEvent>
@@ -24,22 +14,10 @@
     <userTask id="Activity_0hy324h" name="Choose pizza" flowable:assignee="${pizzaEater.username}" jmix:assigneeSource="processVariable" jmix:assigneeValue="pizzaEater">
       <extensionElements>
         <jmix:conditionDetails conditionSource="userTaskOutcome" />
-        <jmix:formData type="input-dialog" openMode="DIALOG">
-          <jmix:formFields>
-            <jmix:formField id="message" caption="Message" type="string" editable="false" required="false" />
-            <jmix:formField id="pizzaItem" caption="Pizza item" type="entity" editable="true" required="true">
-              <jmix:formFieldProperty name="entityName" value="jbt_PizzaItem" />
-              <jmix:formFieldProperty name="uiComponent" value="entityPicker" />
-              <jmix:formFieldProperty name="lookupScreen" value="jbt_PizzaItem.list" />
-              <jmix:formFieldEnumValue value="PEPPERONI" caption="Pepperoni" />
-              <jmix:formFieldEnumValue value="FOUR_CHEESE" caption="Four cheese" />
-              <jmix:formFieldEnumValue value="VEGETABLE" caption="Vegetable" />
-            </jmix:formField>
-            <jmix:formField id="specialRequirements" caption="Special requirements" type="multilineString" editable="true" required="false" />
-          </jmix:formFields>
+        <jmix:formData type="jmix-screen" openMode="DIALOG" screenId="jbt_ChoosePizzaForm">
           <jmix:formOutcomes>
-            <jmix:formOutcome id="pizza_chosen" caption="Pizza chosen" icon="ASTERISK" />
-            <jmix:formOutcome id="not_hungry" caption="Not hungry" icon="BAN" />
+            <jmix:formOutcome id="pizza_chosen" />
+            <jmix:formOutcome id="not_hungry" />
           </jmix:formOutcomes>
         </jmix:formData>
       </extensionElements>
@@ -51,29 +29,13 @@
       <extensionElements>
         <jmix:conditionDetails conditionSource="userTaskOutcome" />
         <jmix:springBean beanName="jbt_RandomRobinUserProvider" methodName="getUser" />
-        <jmix:formData type="input-dialog" openMode="DIALOG">
-          <jmix:formFields>
-            <jmix:formField id="pizzaEater" caption="Pizza eater" type="entity" editable="false" required="false">
-              <jmix:formFieldProperty name="entityName" value="jbt_User" />
-              <jmix:formFieldProperty name="uiComponent" value="entityPicker" />
-              <jmix:formFieldProperty name="lookupScreen" value="jbt_User.list" />
-            </jmix:formField>
-            <jmix:formField id="pizzaItem" caption="Pizza type" type="entity" editable="false" required="false">
-              <jmix:formFieldProperty name="uiComponent" value="entityPicker" />
-              <jmix:formFieldProperty name="entityName" value="jbt_PizzaItem" />
-              <jmix:formFieldProperty name="query" value="" />
-              <jmix:formFieldProperty name="lookupScreen" value="jbt_PizzaItem.list" />
-              <jmix:formFieldEnumValue value="PEPPERONI" caption="Pepperoni" />
-              <jmix:formFieldEnumValue value="FOUR_CHEESE" caption="Four cheese" />
-              <jmix:formFieldEnumValue value="VEGETABLE" caption="Vegetable" />
-            </jmix:formField>
-          </jmix:formFields>
+        <flowable:taskListener class="com.company.jmixbpmtraining.listeners.ApproverListener" event="assignment" />
+        <jmix:formData type="jmix-screen" openMode="DIALOG" screenId="jbt_ApprovePizzaForm">
           <jmix:formOutcomes>
-            <jmix:formOutcome id="approved" caption="Approved" icon="DOLLAR" />
-            <jmix:formOutcome id="rejected" caption="Rejected" icon="BAN" />
+            <jmix:formOutcome id="approve" />
+            <jmix:formOutcome id="reject" />
           </jmix:formOutcomes>
         </jmix:formData>
-        <flowable:taskListener class="com.company.jmixbpmtraining.listeners.ApproverListener" event="assignment" />
       </extensionElements>
       <incoming>Flow_18ot11h</incoming>
       <outgoing>Flow_1hwz49w</outgoing>
@@ -313,18 +275,10 @@ execution.setVariable("message",  messageWithGreeting)</script>
       <incoming>Flow_1j1vp7y</incoming>
       <outgoing>Flow_1u5diw1</outgoing>
     </serviceTask>
-    <textAnnotation id="TextAnnotation_1qgdhf2">
-      <text>Script task added</text>
+    <textAnnotation id="TextAnnotation_062ucmk">
+      <text>Jmix view form</text>
     </textAnnotation>
-    <association id="Association_02ibu88" sourceRef="Activity_10yx741" targetRef="TextAnnotation_1qgdhf2" />
-    <textAnnotation id="TextAnnotation_1vwcplx">
-      <text>Service task added</text>
-    </textAnnotation>
-    <association id="Association_01xbrcq" sourceRef="Activity_12b8b9n" targetRef="TextAnnotation_1vwcplx" />
-    <textAnnotation id="TextAnnotation_1syp80v">
-      <text>Decision table changed</text>
-    </textAnnotation>
-    <association id="Association_0jrdbqf" sourceRef="Activity_0yrv6k2" targetRef="TextAnnotation_1syp80v" />
+    <association id="Association_1l2ywv2" sourceRef="Event_0yqhrkq" targetRef="TextAnnotation_062ucmk" />
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_process">
     <bpmndi:BPMNPlane id="BPMNPlane_process" bpmnElement="pizza-process">
@@ -413,16 +367,8 @@ execution.setVariable("message",  messageWithGreeting)</script>
         <omgdc:Bounds x="810" y="120" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_1qgdhf2_di" bpmnElement="TextAnnotation_1qgdhf2">
-        <omgdc:Bounds x="170" y="40" width="99.99656781987919" height="40.637012630422845" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_1vwcplx_di" bpmnElement="TextAnnotation_1vwcplx">
-        <omgdc:Bounds x="910" y="40" width="99.99656781987919" height="40.637012630422845" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_1syp80v_di" bpmnElement="TextAnnotation_1syp80v">
-        <omgdc:Bounds x="1045" y="40" width="99.99656781987919" height="40.637012630422845" />
+      <bpmndi:BPMNShape id="TextAnnotation_062ucmk_di" bpmnElement="TextAnnotation_062ucmk">
+        <omgdc:Bounds x="20" y="60" width="99.9959660068847" height="29.999462134251292" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_03m4msl_di" bpmnElement="Event_0gzomin">
@@ -540,17 +486,9 @@ execution.setVariable("message",  messageWithGreeting)</script>
         <di:waypoint x="910" y="160" />
         <di:waypoint x="960" y="160" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_02ibu88_di" bpmnElement="Association_02ibu88">
-        <di:waypoint x="158" y="120" />
-        <di:waypoint x="196" y="81" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_01xbrcq_di" bpmnElement="Association_01xbrcq">
-        <di:waypoint x="898" y="120" />
-        <di:waypoint x="936" y="81" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_0jrdbqf_di" bpmnElement="Association_0jrdbqf">
-        <di:waypoint x="1042" y="120" />
-        <di:waypoint x="1074" y="81" />
+      <bpmndi:BPMNEdge id="Association_1l2ywv2_di" bpmnElement="Association_1l2ywv2">
+        <di:waypoint x="11" y="146" />
+        <di:waypoint x="58" y="90" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
