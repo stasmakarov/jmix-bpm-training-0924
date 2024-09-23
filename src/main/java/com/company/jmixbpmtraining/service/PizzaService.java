@@ -1,8 +1,10 @@
 package com.company.jmixbpmtraining.service;
 
 import com.company.jmixbpmtraining.entity.OrderLine;
+import com.company.jmixbpmtraining.entity.PizzaItem;
 import com.company.jmixbpmtraining.entity.PizzaOrder;
 import io.jmix.core.DataManager;
+import io.jmix.core.UnconstrainedDataManager;
 import io.jmix.core.querycondition.PropertyCondition;
 import io.jmix.core.security.SystemAuthenticator;
 import org.slf4j.Logger;
@@ -53,5 +55,15 @@ public class PizzaService {
         } finally {
             authenticator.end();
         }
+    }
+
+    @Autowired
+    private UnconstrainedDataManager unconstrainedDataManager;
+
+    public Double changePrice(PizzaItem pizzaItem, Double newPrice) {
+        Double oldPrice = pizzaItem.getPrice();
+        pizzaItem.setPrice(newPrice);
+        unconstrainedDataManager.save(pizzaItem);
+        return oldPrice;
     }
 }
